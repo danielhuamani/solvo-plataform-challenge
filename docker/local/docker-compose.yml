@@ -1,0 +1,16 @@
+
+services:
+  web:
+    build:
+      context: ../..
+      dockerfile: docker/local/DockerFile
+    working_dir: /app
+    volumes:
+      - ../../src:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.local
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    command: python manage.py runserver 0.0.0.0:8000

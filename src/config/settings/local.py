@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
+from decouple import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -20,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'tmip)&_(!hf4i@y!xu0q4kqg$xo)bdlkrd+h6o_m5#0@j7+1hl'
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='tmip)&_(!hf4i@y!xu0q4kqg$xo)bdlkrd+h6o_m5#0@j7+1hl')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', default='', cast=lambda v: [h for h in v.split(',') if h])
 
 
 # Application definition
@@ -37,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'apps.platforms',
+    'apps.accounts',
+    'apps.devices',
+    'apps.notifications',
 ]
 
 MIDDLEWARE = [
@@ -118,3 +125,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'apps.accounts.authentication.PlatformJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
