@@ -2,7 +2,6 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 
 from apps.devices.serializers import DeviceCreateSerializer, DeviceSerializer
-from apps.devices.services import enforce_device_limit
 
 
 class DeviceListCreateView(generics.GenericAPIView):
@@ -14,14 +13,9 @@ class DeviceListCreateView(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        platform_settings = getattr(request.platform, 'settings', None)
-        max_devices = getattr(platform_settings, 'max_devices', 5)
-
-        enforce_device_limit(platform_user=request.platform_user, max_devices=max_devices)
-
         serializer = DeviceCreateSerializer(
             data=request.data,
-            context={'platform_user': request.platform_user},
+            context={'platform_user': request.platform_user, 'platform': request.platform},
         )
         serializer.is_valid(raise_exception=True)
         device = serializer.save()

@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from apps.devices.models import Device
+from apps.devices.services import enforce_device_limit
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -23,6 +24,16 @@ class DeviceCreateSerializer(serializers.Serializer):
     ip_address = serializers.IPAddressField()
     is_active = serializers.BooleanField(required=False, default=True)
     last_seen = serializers.DateTimeField(required=False)
+
+    def validate(self, attrs):
+        platform = self.context['platform']
+        platform_user = self.context['platform_user']
+
+        platform_settings = getattr(platform, 'settings', None)
+        max_devices = getattr(platform_settings, 'max_devices', 5)
+        enforce_device_limit(platform_user=platform_user, max_devices=max_devices)
+
+        return attrs
 
     def validate_last_seen(self, value):
         return value

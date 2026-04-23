@@ -37,6 +37,12 @@ API en:
 
 - `http://localhost:8000/`
 
+Docs:
+
+- Swagger UI: `http://localhost:8000/api/docs/`
+- ReDoc: `http://localhost:8000/api/redoc/`
+- OpenAPI schema: `http://localhost:8000/api/schema/`
+
 Admin:
 
 - `http://localhost:8000/admin/`
