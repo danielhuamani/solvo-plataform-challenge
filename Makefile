@@ -18,6 +18,9 @@ down:
 manage:
 	docker compose -f $(COMPOSE_FILE) exec web python manage.py $(cmd)
 
+superuser:
+	docker compose -f $(COMPOSE_FILE) exec web python manage.py createsuperuser
+
 startapp:
 	docker compose -f $(COMPOSE_FILE) exec web sh -c "mkdir -p apps/$(name) && python manage.py startapp $(name) apps/$(name)"
 
@@ -26,3 +29,4 @@ startapp:
 # make manage cmd="createsuperuser"
 # make manage cmd="shell"
 # make startapp name="mi_app"
+# make superuser

@@ -7,6 +7,11 @@ from apps.devices.serializers import DeviceCreateSerializer, DeviceSerializer
 class DeviceListCreateView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_serializer_class(self):
+        if self.request and self.request.method == 'POST':
+            return DeviceCreateSerializer
+        return DeviceSerializer
+
     def get(self, request):
         qs = request.platform_user.devices.all().order_by('-created_at')
         serializer = DeviceSerializer(qs, many=True)
@@ -15,7 +20,7 @@ class DeviceListCreateView(generics.GenericAPIView):
     def post(self, request):
         serializer = DeviceCreateSerializer(
             data=request.data,
-            context={'platform_user': request.platform_user, 'platform': request.platform},
+            context={'platform_user': request.platform_user, 'platform': request.platform, 'request': request},
         )
         serializer.is_valid(raise_exception=True)
         device = serializer.save()

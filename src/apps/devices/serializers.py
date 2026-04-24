@@ -1,8 +1,8 @@
-from django.utils import timezone
 from rest_framework import serializers
 
+from apps.core.utils import now_local
 from apps.devices.models import Device
-from apps.devices.services import enforce_device_limit
+from apps.devices.services import enforce_device_limit, get_client_ip
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -21,7 +21,6 @@ class DeviceSerializer(serializers.ModelSerializer):
 
 class DeviceCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
-    ip_address = serializers.IPAddressField()
     is_active = serializers.BooleanField(required=False, default=True)
     last_seen = serializers.DateTimeField(required=False)
 
@@ -40,11 +39,20 @@ class DeviceCreateSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         platform_user = self.context['platform_user']
-        last_seen = validated_data.get('last_seen') or timezone.now()
+        last_seen = validated_data.get('last_seen') or now_local()
+
+        request = self.context.get('request')
+        ip_address = get_client_ip(request) if request is not None else None
+
+        if not ip_address:
+            raise serializers.ValidationError({'ip_address': 'Could not infer IP address from request.'})
+
+        ip_address = serializers.IPAddressField().run_validation(ip_address)
+
         device = Device.objects.create(
             platform_user=platform_user,
             name=validated_data['name'],
-            ip_address=validated_data['ip_address'],
+            ip_address=ip_address,
             is_active=validated_data.get('is_active', True),
             last_seen=last_seen,
         )

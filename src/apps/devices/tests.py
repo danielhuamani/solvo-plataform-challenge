@@ -41,21 +41,21 @@ class DeviceFlowsTests(TestCase):
     def test_create_device_respects_max_devices(self):
         resp1 = self.client.post(
             '/api/devices/',
-            {'name': 'd1', 'ip_address': '10.0.0.1', 'is_active': True},
+            {'name': 'd1', 'is_active': True},
             format='json',
         )
         self.assertEqual(resp1.status_code, 201)
 
         resp2 = self.client.post(
             '/api/devices/',
-            {'name': 'd2', 'ip_address': '10.0.0.2', 'is_active': True},
+            {'name': 'd2', 'is_active': True},
             format='json',
         )
         self.assertEqual(resp2.status_code, 201)
 
         resp3 = self.client.post(
             '/api/devices/',
-            {'name': 'd3', 'ip_address': '10.0.0.3', 'is_active': True},
+            {'name': 'd3', 'is_active': True},
             format='json',
         )
         self.assertEqual(resp3.status_code, 400)
