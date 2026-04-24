@@ -10,12 +10,12 @@ class DeviceListCreateView(generics.GenericAPIView):
     pagination_class = StandardPagination
 
     def get_serializer_class(self):
-        if self.request and self.request.method == 'POST':
+        if self.request and self.request.method == "POST":
             return DeviceCreateSerializer
         return DeviceSerializer
 
     def get(self, request):
-        qs = request.platform_user.devices.all().order_by('-created_at')
+        qs = request.platform_user.devices.all().order_by("-created_at")
         page = self.paginate_queryset(qs)
         if page is not None:
             serializer = DeviceSerializer(page, many=True)
@@ -27,7 +27,11 @@ class DeviceListCreateView(generics.GenericAPIView):
     def post(self, request):
         serializer = DeviceCreateSerializer(
             data=request.data,
-            context={'platform_user': request.platform_user, 'platform': request.platform, 'request': request},
+            context={
+                "platform_user": request.platform_user,
+                "platform": request.platform,
+                "request": request,
+            },
         )
         serializer.is_valid(raise_exception=True)
         device = serializer.save()

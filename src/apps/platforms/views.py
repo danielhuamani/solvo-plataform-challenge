@@ -9,4 +9,4 @@ class PlatformListView(generics.ListAPIView):
     serializer_class = PlatformListSerializer
 
     def get_queryset(self):
-        return Platform.objects.filter(is_active=True).order_by('name')
+        return Platform.objects.filter(is_active=True).order_by("name")

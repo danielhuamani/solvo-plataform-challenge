@@ -24,7 +24,7 @@ class PlatformSetting(models.Model):
     platform = models.OneToOneField(
         Platform,
         on_delete=models.CASCADE,
-        related_name='settings',
+        related_name="settings",
     )
 
     max_devices = models.PositiveIntegerField(default=5)

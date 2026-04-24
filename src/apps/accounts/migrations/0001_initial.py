@@ -5,29 +5,47 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('platforms', '0001_initial'),
+        ("platforms", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PlatformUser',
+            name="PlatformUser",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254)),
-                ('password', models.CharField(max_length=255)),
-                ('first_name', models.CharField(blank=True, max_length=100)),
-                ('last_name', models.CharField(blank=True, max_length=100)),
-                ('is_active', models.BooleanField(default=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('platform', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='users', to='platforms.platform')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254)),
+                ("password", models.CharField(max_length=255)),
+                ("first_name", models.CharField(blank=True, max_length=100)),
+                ("last_name", models.CharField(blank=True, max_length=100)),
+                ("is_active", models.BooleanField(default=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "platform",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="users",
+                        to="platforms.platform",
+                    ),
+                ),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('platform', 'email'), name='unique_email_per_platform')],
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("platform", "email"), name="unique_email_per_platform"
+                    )
+                ],
             },
         ),
     ]

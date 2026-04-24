@@ -24,6 +24,12 @@ superuser:
 startapp:
 	docker compose -f $(COMPOSE_FILE) exec web sh -c "mkdir -p apps/$(name) && python manage.py startapp $(name) apps/$(name)"
 
+lint:
+	docker compose -f $(COMPOSE_FILE) exec web ruff check .
+
+format:
+	docker compose -f $(COMPOSE_FILE) exec web ruff format .
+
 # examples:
 # make manage cmd="migrate"
 # make manage cmd="createsuperuser"

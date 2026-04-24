@@ -7,7 +7,7 @@ class Device(models.Model):
     platform_user = models.ForeignKey(
         PlatformUser,
         on_delete=models.CASCADE,
-        related_name='devices',
+        related_name="devices",
     )
 
     name = models.CharField(max_length=255)

@@ -9,7 +9,7 @@ class PlatformUser(models.Model):
     platform = models.ForeignKey(
         Platform,
         on_delete=models.CASCADE,
-        related_name='users',
+        related_name="users",
     )
 
     email = models.EmailField()
@@ -26,8 +26,8 @@ class PlatformUser(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['platform', 'email'],
-                name='unique_email_per_platform',
+                fields=["platform", "email"],
+                name="unique_email_per_platform",
             )
         ]
 

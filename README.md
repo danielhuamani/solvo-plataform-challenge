@@ -177,3 +177,14 @@ Sin Docker:
 ```bash
 python src/manage.py test
 ```
+
+## Linter / Formatter
+
+Se usa **Ruff** para linting y formateo.
+
+Con Docker:
+
+```bash
+make lint
+make format
+```

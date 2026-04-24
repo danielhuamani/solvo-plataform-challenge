@@ -14,15 +14,26 @@ class NotificationChannel(ABC):
 
 class LogChannel:
     def send(self, event: Any) -> None:
-        logger.info("notification channel=log event=%s payload=%s", type(event).__name__, event.__dict__)
+        logger.info(
+            "notification channel=log event=%s payload=%s",
+            type(event).__name__,
+            event.__dict__,
+        )
 
 
 class EmailChannel:
     def send(self, event: Any) -> None:
-        logger.info("notification channel=email event=%s payload=%s", type(event).__name__, event.__dict__)
+        logger.info(
+            "notification channel=email event=%s payload=%s",
+            type(event).__name__,
+            event.__dict__,
+        )
 
 
 class SmsChannel:
     def send(self, event: Any) -> None:
-        logger.info("notification channel=sms event=%s payload=%s", type(event).__name__, event.__dict__)
-
+        logger.info(
+            "notification channel=sms event=%s payload=%s",
+            type(event).__name__,
+            event.__dict__,
+        )

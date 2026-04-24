@@ -1,8 +1,14 @@
 from apps.notifications.events import UserRegisteredEvent
-from apps.notifications.tasks import user_registered_email, user_registered_log, user_registered_sms
+from apps.notifications.tasks import (
+    user_registered_email,
+    user_registered_log,
+    user_registered_sms,
+)
 
 
-def notify_user_registered(*, platform_slug: str, platform_user_id: int, email: str) -> None:
+def notify_user_registered(
+    *, platform_slug: str, platform_user_id: int, email: str
+) -> None:
     event = UserRegisteredEvent(
         platform_slug=platform_slug,
         platform_user_id=platform_user_id,
