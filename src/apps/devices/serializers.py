@@ -2,8 +2,8 @@ from rest_framework import serializers
 
 from apps.core.utils import now_local
 from apps.devices.models import Device
-from apps.devices.services import enforce_device_limit, get_client_ip
-
+from apps.devices.services import enforce_device_limit
+from apps.core.utils import get_client_ip
 
 class DeviceSerializer(serializers.ModelSerializer):
     class Meta:

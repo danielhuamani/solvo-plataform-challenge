@@ -1,5 +1,5 @@
 from apps.notifications.events import UserRegisteredEvent
-from apps.notifications.handlers import handle_user_registered
+from apps.notifications.tasks import user_registered_email, user_registered_log, user_registered_sms
 
 
 def notify_user_registered(*, platform_slug: str, platform_user_id: int, email: str) -> None:
@@ -8,4 +8,19 @@ def notify_user_registered(*, platform_slug: str, platform_user_id: int, email: 
         platform_user_id=platform_user_id,
         email=email,
     )
-    handle_user_registered(event)
+
+    user_registered_log.delay(
+        platform_slug=event.platform_slug,
+        platform_user_id=event.platform_user_id,
+        email=event.email,
+    )
+    user_registered_email.delay(
+        platform_slug=event.platform_slug,
+        platform_user_id=event.platform_user_id,
+        email=event.email,
+    )
+    user_registered_sms.delay(
+        platform_slug=event.platform_slug,
+        platform_user_id=event.platform_user_id,
+        email=event.email,
+    )

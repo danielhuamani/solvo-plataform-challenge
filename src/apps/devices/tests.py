@@ -35,8 +35,9 @@ class DeviceFlowsTests(TestCase):
 
         resp = self.client.get('/api/devices/')
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.data), 1)
-        self.assertEqual(resp.data[0]['name'], 'd1')
+        self.assertEqual(resp.data['count'], 1)
+        self.assertEqual(len(resp.data['results']), 1)
+        self.assertEqual(resp.data['results'][0]['name'], 'd1')
 
     def test_create_device_respects_max_devices(self):
         resp1 = self.client.post(

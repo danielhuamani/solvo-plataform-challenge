@@ -13,4 +13,34 @@ services:
       DJANGO_SETTINGS_MODULE: config.settings.local
       PYTHONDONTWRITEBYTECODE: "1"
       PYTHONUNBUFFERED: "1"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     command: python manage.py runserver 0.0.0.0:8000
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  worker:
+    build:
+      context: ../..
+      dockerfile: docker/local/DockerFile
+    working_dir: /app
+    volumes:
+      - ../../src:/app
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.local
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    command: celery -A config worker -l info
