@@ -1,6 +1,7 @@
 from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 
 from apps.accounts.serializers import (
     PlatformUserLoginSerializer,
@@ -8,8 +9,9 @@ from apps.accounts.serializers import (
 )
 
 
-class RegisterView(APIView):
+class RegisterView(CreateAPIView):
     permission_classes = [permissions.AllowAny]
+    serializer_class = PlatformUserRegisterSerializer
 
     def post(self, request):
         serializer = PlatformUserRegisterSerializer(data=request.data)
@@ -32,7 +34,8 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     permission_classes = [permissions.AllowAny]
-
+    serializer_class = PlatformUserLoginSerializer
+    
     def post(self, request):
         serializer = PlatformUserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

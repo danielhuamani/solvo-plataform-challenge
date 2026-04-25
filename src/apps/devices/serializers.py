@@ -23,7 +23,6 @@ class DeviceSerializer(serializers.ModelSerializer):
 class DeviceCreateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     is_active = serializers.BooleanField(required=False, default=True)
-    last_seen = serializers.DateTimeField(required=False)
 
     def validate(self, attrs):
         platform = self.context["platform"]
@@ -40,7 +39,7 @@ class DeviceCreateSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         platform_user = self.context["platform_user"]
-        last_seen = validated_data.get("last_seen") or now_local()
+        last_seen = now_local()
 
         request = self.context.get("request")
         ip_address = get_client_ip(request) if request is not None else None

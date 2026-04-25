@@ -1,6 +1,6 @@
 # Solvo Platform API (Django + DRF)
 
-API REST multi-plataforma con autenticación JWT por **plataforma** y un modelo de usuario **no-global** (`PlatformUser`).
+API REST multi-plataforma con autenticación JWT por **plataforma** 
 
 ## Requisitos
 
@@ -9,25 +9,33 @@ API REST multi-plataforma con autenticación JWT por **plataforma** y un modelo 
 
 ## Setup rápido (Docker)
 
-1. Build
+1. Variables de entorno
+
+Crear tu archivo `.env` basado en el ejemplo:
+
+```bash
+cp .env.example .env
+```
+
+2. Build
 
 ```bash
 make build
 ```
 
-2. Migraciones
+3. Migraciones
 
 ```bash
 make manage cmd="migrate"
 ```
 
-3. Seed de plataformas de ejemplo
+4. ejemplos de plataformas
 
 ```bash
 make manage cmd="seed_platforms"
 ```
 
-4. Levantar API
+5. Levantar API
 
 ```bash
 make up
@@ -37,7 +45,7 @@ API en:
 
 - `http://localhost:8000/`
 
-Docs:
+Documentación del API:
 
 - Swagger UI: `http://localhost:8000/api/docs/`
 - ReDoc: `http://localhost:8000/api/redoc/`
@@ -67,7 +75,7 @@ pip install -r src/requirements/base.txt
 python src/manage.py migrate
 ```
 
-3. Seed plataformas
+3. ejemplos plataformas
 
 ```bash
 python src/manage.py seed_platforms
