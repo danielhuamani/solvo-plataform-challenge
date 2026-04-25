@@ -48,8 +48,8 @@ API en:
 Documentación del API:
 
 - Swagger UI: `http://localhost:8000/api/docs/`
-- ReDoc: `http://localhost:8000/api/redoc/`
-- OpenAPI schema: `http://localhost:8000/api/schema/`
+
+![alt text](image.png)
 
 Admin:
 
